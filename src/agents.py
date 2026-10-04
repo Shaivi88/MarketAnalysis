@@ -7,6 +7,7 @@ from langchain_community.utilities import SerpAPIWrapper
 
 load_dotenv()
 litellm.cache = None
+litellm.drop_params = True
 
 os.environ["SERPAPI_API_KEY"] = os.getenv("SEARCH_API_KEY", "")
 
