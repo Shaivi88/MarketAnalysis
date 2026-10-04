@@ -1,5 +1,5 @@
-crewai
-crewai-tools
+crewai==0.80.0
+crewai-tools==0.17.0
 langchain-groq
 langchain-community
 google-search-results
