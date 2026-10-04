@@ -7,6 +7,7 @@ from langchain_community.utilities import SerpAPIWrapper
 load_dotenv()
 
 os.environ["SERPAPI_API_KEY"] = os.getenv("SEARCH_API_KEY", "")
+os.environ["OPENAI_API_KEY"] = os.getenv("GROQ_API_KEY", "")
 
 _search = SerpAPIWrapper()
 
