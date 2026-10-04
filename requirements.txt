@@ -1,6 +1,4 @@
 crewai
-litellm>=1.150.0
 langchain-community
 google-search-results
 python-dotenv
-streamlit
