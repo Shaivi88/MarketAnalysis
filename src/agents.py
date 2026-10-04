@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 from crewai import Agent, LLM
-from crewai.tools import tool
+from langchain_core.tools import tool
 from serpapi import GoogleSearch
 
 load_dotenv()
