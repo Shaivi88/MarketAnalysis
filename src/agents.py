@@ -2,18 +2,16 @@ import os
 from dotenv import load_dotenv
 from crewai import Agent, LLM
 from crewai.tools import tool
-from langchain_community.utilities import SerpAPIWrapper
+from serpapi import GoogleSearch
 
 load_dotenv()
-
-os.environ["SERPAPI_API_KEY"] = os.getenv("SEARCH_API_KEY", "")
-
-_search = SerpAPIWrapper()
 
 @tool("web_search")
 def search_tool(query: str) -> str:
     """Search the web for current information about industries, companies, market trends, pricing updates, and product launches."""
-    return _search.run(query)
+    results = GoogleSearch({"q": query, "api_key": os.getenv("SEARCH_API_KEY", ""), "num": 8}).get_dict()
+    organic = results.get("organic_results", [])
+    return "\n".join(f"{r.get('title', '')}: {r.get('snippet', '')}" for r in organic)
 
 _llm = LLM(
     model="groq/openai/gpt-oss-120b",
