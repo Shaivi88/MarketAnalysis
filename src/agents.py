@@ -1,13 +1,12 @@
 import os
 from dotenv import load_dotenv
-from crewai import Agent
+from crewai import Agent, LLM
 from crewai.tools import tool
 from langchain_community.utilities import SerpAPIWrapper
 
 load_dotenv()
 
 os.environ["SERPAPI_API_KEY"] = os.getenv("SEARCH_API_KEY", "")
-os.environ["OPENAI_API_KEY"] = os.getenv("GROQ_API_KEY", "")
 
 _search = SerpAPIWrapper()
 
@@ -16,7 +15,11 @@ def search_tool(query: str) -> str:
     """Search the web for current information about industries, companies, market trends, pricing updates, and product launches."""
     return _search.run(query)
 
-_llm = "openai/gpt-oss-20b"
+_llm = LLM(
+    model="openai/gpt-oss-120b",
+    base_url="https://api.groq.com/openai/v1",
+    api_key=os.getenv("GROQ_API_KEY"),
+)
 
 scout_agent = Agent(
     role="Market Scout",
