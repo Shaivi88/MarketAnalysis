@@ -21,11 +21,5 @@ class ResearchRequest(BaseModel):
 def research(req: ResearchRequest):
     from src.crew import run_crew
 
-    paths = run_crew(req.industry)
-
-    with open(paths["swot"], "r", encoding="utf-8") as f:
-        swot = f.read()
-    with open(paths["brief"], "r", encoding="utf-8") as f:
-        brief = f.read()
-
-    return {"swot": swot, "brief": brief}
+    result = run_crew(req.industry)
+    return {"swot": result["swot"], "brief": result["brief"]}
