@@ -1,13 +1,10 @@
 import os
-import litellm
 from dotenv import load_dotenv
 from crewai import Agent, LLM
 from crewai.tools import tool
 from langchain_community.utilities import SerpAPIWrapper
 
 load_dotenv()
-litellm.cache = None
-litellm.drop_params = True
 
 os.environ["SERPAPI_API_KEY"] = os.getenv("SEARCH_API_KEY", "")
 
@@ -19,7 +16,9 @@ def search_tool(query: str) -> str:
     return _search.run(query)
 
 _llm = LLM(
-    model="groq/openai/gpt-oss-120b",
+    model="openai/gpt-oss-120b",
+    custom_openai=True,
+    base_url="https://api.groq.com/openai/v1",
     api_key=os.getenv("GROQ_API_KEY"),
 )
 
