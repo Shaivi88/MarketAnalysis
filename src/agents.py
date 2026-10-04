@@ -1,24 +1,28 @@
 import os
+import litellm
 from dotenv import load_dotenv
 from crewai import Agent, LLM
 from serpapi import GoogleSearch
 
 load_dotenv()
 
+litellm.num_retries = 6
+litellm.retry_after = 10
+
 
 def fetch_search_results(industry: str) -> str:
     queries = [
         f"{industry} market new entrants 2024 2025",
-        f"{industry} industry pricing strategies competitors",
         f"{industry} market size growth rate statistics 2024",
     ]
     lines = []
     api_key = os.getenv("SEARCH_API_KEY", "")
     for q in queries:
-        results = GoogleSearch({"q": q, "api_key": api_key, "num": 5}).get_dict()
+        results = GoogleSearch({"q": q, "api_key": api_key, "num": 3}).get_dict()
         organic = results.get("organic_results", [])
         for r in organic:
-            lines.append(f"{r.get('title', '')}: {r.get('snippet', '')}")
+            snippet = r.get("snippet", "")[:200]
+            lines.append(f"{r.get('title', '')}: {snippet}")
     return "\n".join(lines)
 
 
