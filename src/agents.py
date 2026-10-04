@@ -16,8 +16,7 @@ def search_tool(query: str) -> str:
     return _search.run(query)
 
 _llm = LLM(
-    model="openai/gpt-oss-120b",
-    base_url="https://api.groq.com/openai/v1",
+    model="groq/openai/gpt-oss-120b",
     api_key=os.getenv("GROQ_API_KEY"),
 )
 
