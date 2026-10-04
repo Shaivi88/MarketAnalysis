@@ -14,7 +14,7 @@ def search_tool(query: str) -> str:
     return "\n".join(f"{r.get('title', '')}: {r.get('snippet', '')}" for r in organic)
 
 _llm = LLM(
-    model="groq/openai/gpt-oss-120b",
+    model="groq/llama-3.3-70b-versatile",
     api_key=os.getenv("GROQ_API_KEY"),
 )
 
