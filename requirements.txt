@@ -1,6 +1,5 @@
-crewai==0.63.6
-crewai-tools==0.8.3
-langchain-groq
+crewai
+litellm>=1.150.0
 langchain-community
 google-search-results
 python-dotenv
