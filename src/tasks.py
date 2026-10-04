@@ -54,7 +54,7 @@ def create_tasks():
         ),
         agent=strategy_agent,
         context=[synthesis_task],
-        output_file="outputs/swot.md",
+        output_file="/tmp/outputs/swot.md",
     )
 
     brief_task = Task(
@@ -74,7 +74,7 @@ def create_tasks():
         ),
         agent=strategy_agent,
         context=[synthesis_task],
-        output_file="outputs/actionable_brief.md",
+        output_file="/tmp/outputs/actionable_brief.md",
     )
 
     return scout_task, synthesis_task, swot_task, brief_task

@@ -1,5 +1,8 @@
-docs/ 
-.DS_Store/ 
+docs/
+.DS_Store/
 .DS_Store
-.env 
+.env
+.env.local
 .firecrawl/
+node_modules/
+.next/

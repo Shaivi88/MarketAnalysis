@@ -3,7 +3,7 @@ from crewai import Crew, Process
 from src.agents import scout_agent, synthesis_agent, strategy_agent
 from src.tasks import create_tasks
 
-os.makedirs("outputs", exist_ok=True)
+os.makedirs("/tmp/outputs", exist_ok=True)
 
 
 def run_crew(industry: str) -> dict:
@@ -19,6 +19,6 @@ def run_crew(industry: str) -> dict:
     crew.kickoff(inputs={"industry": industry})
 
     return {
-        "swot": "outputs/swot.md",
-        "brief": "outputs/actionable_brief.md",
+        "swot": "/tmp/outputs/swot.md",
+        "brief": "/tmp/outputs/actionable_brief.md",
     }
