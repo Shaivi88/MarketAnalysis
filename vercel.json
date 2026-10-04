@@ -1,7 +1,4 @@
 {
-  "functions": {
-    "api/research.py": {
-      "maxDuration": 300
-    }
-  }
+  "buildCommand": "npm run build",
+  "framework": "nextjs"
 }
