@@ -5,7 +5,10 @@ from src.agents import scout_agent, synthesis_agent, strategy_agent
 def create_tasks():
     scout_task = Task(
         description=(
-            "Search the web comprehensively for the {industry} industry. Identify and document:\n"
+            "Analyse the following raw web search results about the {industry} industry "
+            "and extract structured intelligence:\n\n"
+            "{search_results}\n\n"
+            "From the above, identify and document:\n"
             "- New market entrants (companies that entered in the last 1-2 years)\n"
             "- Pricing strategies and recent pricing updates from key players\n"
             "- Recent product launches and notable feature releases\n"

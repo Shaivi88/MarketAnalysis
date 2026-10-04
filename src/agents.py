@@ -1,35 +1,43 @@
 import os
 from dotenv import load_dotenv
 from crewai import Agent, LLM
-from langchain_core.tools import tool
 from serpapi import GoogleSearch
 
 load_dotenv()
 
-@tool("web_search")
-def search_tool(query: str) -> str:
-    """Search the web for current information about industries, companies, market trends, pricing updates, and product launches."""
-    results = GoogleSearch({"q": query, "api_key": os.getenv("SEARCH_API_KEY", ""), "num": 8}).get_dict()
-    organic = results.get("organic_results", [])
-    return "\n".join(f"{r.get('title', '')}: {r.get('snippet', '')}" for r in organic)
+
+def fetch_search_results(industry: str) -> str:
+    queries = [
+        f"{industry} market new entrants 2024 2025",
+        f"{industry} industry pricing strategies competitors",
+        f"{industry} market size growth rate statistics 2024",
+    ]
+    lines = []
+    api_key = os.getenv("SEARCH_API_KEY", "")
+    for q in queries:
+        results = GoogleSearch({"q": q, "api_key": api_key, "num": 5}).get_dict()
+        organic = results.get("organic_results", [])
+        for r in organic:
+            lines.append(f"{r.get('title', '')}: {r.get('snippet', '')}")
+    return "\n".join(lines)
+
 
 _llm = LLM(
-    model="groq/llama-3.3-70b-versatile",
+    model="groq/openai/gpt-oss-120b",
     api_key=os.getenv("GROQ_API_KEY"),
 )
 
 scout_agent = Agent(
     role="Market Scout",
     goal=(
-        "Monitor the {industry} industry for new market entrants, "
-        "pricing updates, and recent product launches."
+        "Analyse pre-fetched web research on the {industry} industry and identify "
+        "new market entrants, pricing updates, and recent product launches."
     ),
     backstory=(
         "You are an expert market researcher specialising in competitive intelligence. "
         "You track industry movements with precision, gathering comprehensive data on "
         "market dynamics, emerging players, and strategic pricing shifts."
     ),
-    tools=[search_tool],
     llm=_llm,
     verbose=True,
 )
