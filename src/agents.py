@@ -1,25 +1,27 @@
 import os
 from dotenv import load_dotenv
-from crewai import Agent, LLM
-from crewai.tools import tool
+from crewai import Agent
+from langchain_groq import ChatGroq
 from langchain_community.utilities import SerpAPIWrapper
+from langchain_core.tools import Tool
 
 load_dotenv()
 
 os.environ["SERPAPI_API_KEY"] = os.getenv("SEARCH_API_KEY", "")
 
-_search = SerpAPIWrapper()
-
-@tool("web_search")
-def search_tool(query: str) -> str:
-    """Search the web for current information about industries, companies, market trends, pricing updates, and product launches."""
-    return _search.run(query)
-
-_llm = LLM(
-    model="openai/gpt-oss-120b",
-    custom_openai=True,
-    base_url="https://api.groq.com/openai/v1",
+llm = ChatGroq(
     api_key=os.getenv("GROQ_API_KEY"),
+    model="openai/gpt-oss-120b",
+)
+
+_search = SerpAPIWrapper()
+search_tool = Tool(
+    name="web_search",
+    func=_search.run,
+    description=(
+        "Search the web for current information about industries, companies, "
+        "market trends, pricing updates, and product launches."
+    ),
 )
 
 scout_agent = Agent(
@@ -34,7 +36,7 @@ scout_agent = Agent(
         "market dynamics, emerging players, and strategic pricing shifts."
     ),
     tools=[search_tool],
-    llm=_llm,
+    llm=llm,
     verbose=True,
 )
 
@@ -49,7 +51,7 @@ synthesis_agent = Agent(
         "into clear, actionable intelligence. You excel at spotting patterns and building "
         "side-by-side comparisons that highlight market gaps and opportunities."
     ),
-    llm=_llm,
+    llm=llm,
     verbose=True,
 )
 
@@ -64,6 +66,6 @@ strategy_agent = Agent(
         "and go-to-market planning. You translate market intelligence into clear strategic "
         "directives that leadership can act on immediately."
     ),
-    llm=_llm,
+    llm=llm,
     verbose=True,
 )
